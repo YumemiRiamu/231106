@@ -64,8 +64,7 @@
  void myButton_Click3(Windows::Foundation::IInspectable const& sender, Microsoft::UI::Xaml::RoutedEventArgs const& args);
 ```
 실행 화면
-[!Image][./11.PNG]</br>
-[!Image][./12.PNG]</br>
-[!Image][./13.PNG]</br>
-[!Image][./14.PNG]</br>
-
+![Image description](./11.PNG)</br>
+![Image description](./12.PNG)</br>
+![Image description](./13.PNG)</br>
+![Image description](./14.PNG)</br>
