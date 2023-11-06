@@ -4,10 +4,79 @@
 
 20191276 컴퓨터공학과 양용석</br>
 
-1. MFC의 멀티쓰레드 구현</br>
+1. MFC의 멀티쓰레드 구현 : 10개의 정수 배열을 받아 최솟값 표시 </br>
 
 코드
+```
+//CThreadView.h 구조체 정의 및 OnFindMin 함수 정의
+struct SData
+{
+	int array[10] = { 11,3,2,6,7,4,8,10,9,5 };
+	int min = 1;
+	HWND NotifyWindow;
+};
+public:
+	afx_msg void OnFindmin();
+	SData data;
+	CWinThread* Thread;
+	LRESULT OnMinFound(WPARAM wParam, LPARAM lParam);
+```
+```
+//CThreadView.cpp
+BEGIN_MESSAGE_MAP(CThreadView, CView)
+	// 표준 인쇄 명령입니다.
+	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
+	ON_COMMAND(ID_FINDMIN, &CThreadView::OnFindmin)
+	ON_MESSAGE(WM_MIN, &CThreadView::OnMinFound)
+END_MESSAGE_MAP()
+// CThreadView 그리기
 
+void CThreadView::OnDraw(CDC* pDC)
+{
+	CThreadDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	pDC->TextOut(10, 10, pDoc->str);
+	
+}
+//스레드 생성 , 포인터 설정
+UINT MyThread(LPVOID pParam);
+UINT MyThread(LPVOID pParam) {
+	SData* pData = (SData*)pParam;
+	int min = pData->array[0];
+	for (int i = 1; i < 10; i++) {
+		if (pData->array[i] < min) {
+			min = pData->array[i];
+		}
+	}
+	//메시지 출력
+	pData->min = min;
+
+	::PostMessage(pData->NotifyWindow, WM_MIN, 0, 0);
+	return 0;
+
+//초기 최소값 설정
+void CThreadView::OnFindmin()
+{
+	data.min = 1;
+	data.NotifyWindow = m_hWnd;
+	AfxBeginThread(MyThread, &data);
+}
+//최소값 찾기 후 출력
+LRESULT CThreadView::OnMinFound(WPARAM wParam, LPARAM lParam)
+{
+	CThreadDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	CString msg;
+	msg.Format(L"Min of the array = %d", data.min);
+	pDoc->str = msg;
+	Invalidate();
+	return 0L;
+}
+```
 
 2. WinUI3 계산기 구현</br>
 
@@ -64,6 +133,8 @@
  void myButton_Click3(Windows::Foundation::IInspectable const& sender, Microsoft::UI::Xaml::RoutedEventArgs const& args);
 ```
 실행 화면
+![Image description](./9.png)</br>
+![Image description](./10.png)</br>
 ![Image description](./11.PNG)</br>
 ![Image description](./12.PNG)</br>
 ![Image description](./13.PNG)</br>
