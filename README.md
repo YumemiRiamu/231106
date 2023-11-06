@@ -140,8 +140,7 @@ LRESULT CThreadView::OnMinFound(WPARAM wParam, LPARAM lParam)
 </br></br>
 ![Image description](./9.png)</br>
 ![Image description](./10.png)</br>
-2. WINUI3 계산기 구현</br>
-</br>
+2. WINUI3 계산기 구현</br></br>
 ![Image description](./11.PNG)</br>
 ![Image description](./12.PNG)</br>
 ![Image description](./13.PNG)</br>
